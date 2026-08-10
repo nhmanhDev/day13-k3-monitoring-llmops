@@ -9,7 +9,7 @@ pip3 install -r requirements.txt
 ## 2. Chạy server
 
 ```bash
-python3 oltp.py
+python3 otel_demo.py
 ```
 
 ## 3. Test
@@ -24,7 +24,7 @@ curl -X POST http://localhost:8000/chat \
 
 ## 4. Tích hợp Jaeger (Trace Visualization)
 
-Code trong `oltp.py` đã được cấu hình sẵn để đẩy trace sang Jaeger qua OTLP gRPC:
+Code trong `otel_demo.py` đã được cấu hình sẵn để đẩy trace sang Jaeger qua OTLP gRPC:
 
 ```python
 resource = Resource.create({
@@ -60,7 +60,7 @@ docker run -d --name jaeger \
 ### Bước 2: Chạy server & gửi request
 
 ```bash
-python3 oltp.py
+python3 otel_demo.py
 ```
 
 ```bash

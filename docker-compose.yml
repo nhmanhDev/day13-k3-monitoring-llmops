@@ -1,0 +1,18 @@
+# Docker Compose — Jaeger (OpenTelemetry Trace Visualization)
+# Dùng cho module opentelemetry/
+#
+# Chạy:   docker compose up -d jaeger
+# Dừng:   docker compose down
+# UI:     http://localhost:16686
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4317:4317"     # OTLP gRPC receiver
+      - "4318:4318"     # OTLP HTTP receiver
+    restart: unless-stopped
