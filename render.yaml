@@ -1,4 +1,4 @@
-# Render Blueprint — deploy Langfuse Integration FastAPI app
+# Render Blueprint — deploy LLMOps Unified Demo
 # Docs: https://docs.render.com/blueprint-spec
 #
 # Render tự đọc file này khi connect GitHub repo.
@@ -6,13 +6,13 @@
 
 services:
   - type: web
-    name: llmops-langfuse-demo
+    name: llmops-monitoring-demo
     runtime: python
     region: singapore
     plan: free
     branch: main
-    buildCommand: pip install -r langfuse/requirements.txt
-    startCommand: uvicorn langfuse.langfuse-integration:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /
     envVars:
       - key: LANGFUSE_PUBLIC_KEY

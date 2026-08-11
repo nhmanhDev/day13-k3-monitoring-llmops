@@ -6,10 +6,12 @@
 # --- Structured Logging (structured-logs.py) ---
 structlog
 
-# --- PII Scrubbing (pii-scrubbing.py) ---
-presidio-analyzer
-presidio-anonymizer
-spacy
+# --- PII Scrubbing ---
+# Unified app (app.py) dùng regex-only cho cloud deploy (nhẹ, nhanh).
+# Bỏ comment 3 dòng dưới nếu muốn chạy pii-scrubbing.py local (Presidio NLP):
+# presidio-analyzer
+# presidio-anonymizer
+# spacy
 
 # --- OpenTelemetry + Jaeger (opentelemetry/) ---
 opentelemetry-api
