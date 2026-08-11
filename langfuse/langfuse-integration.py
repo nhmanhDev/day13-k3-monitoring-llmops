@@ -1,3 +1,4 @@
+import os
 import time
 import uvicorn
 from dotenv import load_dotenv
@@ -8,6 +9,18 @@ load_dotenv()
 from langfuse import observe, get_client
 
 app = FastAPI(title="AI Agent Observability with Langfuse")
+
+
+# ==============================================================================
+# HEALTH CHECK — Render cần endpoint GET / để kiểm tra service alive
+# ==============================================================================
+@app.get("/")
+async def health_check():
+    return {
+        "status": "healthy",
+        "service": "langfuse-llm-observability",
+        "endpoints": ["POST /chat"],
+    }
 
 
 # ==============================================================================
@@ -91,4 +104,5 @@ async def chat_agent(request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

@@ -1,0 +1,25 @@
+# Render Blueprint — deploy Langfuse Integration FastAPI app
+# Docs: https://docs.render.com/blueprint-spec
+#
+# Render tự đọc file này khi connect GitHub repo.
+# Service sẽ auto-deploy khi push lên branch main.
+
+services:
+  - type: web
+    name: llmops-langfuse-demo
+    runtime: python
+    region: singapore
+    plan: free
+    branch: main
+    buildCommand: pip install -r langfuse/requirements.txt
+    startCommand: uvicorn langfuse.langfuse-integration:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: LANGFUSE_PUBLIC_KEY
+        sync: false
+      - key: LANGFUSE_SECRET_KEY
+        sync: false
+      - key: LANGFUSE_BASE_URL
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11.9"
