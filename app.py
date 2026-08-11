@@ -50,6 +50,7 @@ struct_logger = structlog.get_logger()
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.trace import Status, StatusCode
 
@@ -60,8 +61,18 @@ resource = Resource.create({
 })
 
 provider = TracerProvider(resource=resource)
-# Console exporter — trace xuất ra Render Logs (thay vì Jaeger localhost)
+
+# Jaeger trên Railway — nhận trace qua OTLP gRPC (TCP proxy)
+jaeger_endpoint = os.getenv("JAEGER_OTLP_ENDPOINT", "hayabusa.proxy.rlwy.net:12356")
+try:
+    jaeger_exporter = OTLPSpanExporter(endpoint=jaeger_endpoint, insecure=True)
+    provider.add_span_processor(BatchSpanProcessor(jaeger_exporter))
+except Exception:
+    pass  # Fallback nếu Jaeger không khả dụng
+
+# Console exporter — luôn bật để xem trace trong Render Logs
 provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer("ai.agent.tracer")
 
